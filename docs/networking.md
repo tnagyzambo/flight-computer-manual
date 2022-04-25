@@ -41,5 +41,5 @@ Local Port | Service | Flight Computer Port
 This can be done with the command:
 
 ```
-ssh -L 8080:localhost:8080 -L 8086:localhost:8086 -L 9090:localhost:9090 user@<flight computer ip>
+ssh -L 8080:localhost:80 -L 8086:localhost:8086 -L 9090:localhost:9090 user@<flight computer ip>
 ```
