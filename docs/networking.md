@@ -16,6 +16,8 @@ In order to connect to the flight computer via a direct ethernet connection, you
 
 To find a flight computer with an unknown IP on the network, you must first know the IP of the network adapter. This can be found by running the command `ifconfig`.
 
+Enable `Shared to other computers` under IPv4 for your network adapter.
+
 ### nmap
 
 ```
@@ -43,3 +45,4 @@ This can be done with the command:
 ```
 ssh -L 8080:localhost:80 -L 8086:localhost:8086 -L 9090:localhost:9090 user@<flight computer ip>
 ```
+Change the user to the user you created and input the flight computer IP.
