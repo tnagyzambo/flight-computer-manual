@@ -24,10 +24,24 @@ a lower version. So 71 in this case.
 You now have a pi with a fresh install of rOS!
   
 # Compiling rCTRL
-Again you will need docker desktop up and running for this.  Check vscode task explorer for these commands.
+Again you will need docker desktop up and running for this.  Check vscode task explorer for these commands. Running the build commands is done outside of the dev container.
 1. Open rCTRL in dev container (this will take a while if its the first time in a while)
 2. Build ui in dev container as its web assembly
 3. ROS needs to be built in the xcompile if you a non-arm cpu
+  
+>If you build you will likely get the error `docker.io/multiarch/ubuntu-core:arm64-jammy: not found`
+to solve this we need to locally build the arm64-jammy cross compile container on our machine. We can do this using the command found [here](https://github.com/multiarch/ubuntu-core/issues/28) but updated to our needs a bit.
+1. Download the [multiarch/ubuntu-core repo](https://github.com/multiarch/ubuntu-core)
+2. Navigate to the repo
+3. run: `sudo ./update.sh -a amd64 -v jammy -q arm -u v7.0.0-7 -d docker.io/multiarch/ubuntu-core -t amd64` 
+4. update line 3 to match your system type. in my case amd64
+5. You may need a slight variation of the two `amd64` depending on your pc.
+6. run: `docker image` to confirm you have the new image (if you don't see it try sudo. if you see it then you need to sudo save, change permission and load again)
+  a. `sudo docker images`
+  b. `sudo docker save multiarch/ubuntu-core:arm64-jammy -o arm64-jammy.tar`
+  c. `ls -l` check for permissions
+  d. sudo chmod -R 757 ./
+  e. docker load -i amd64-jammy.tar
   
 >if permission issues: check if files are owned by you (ls -l) if they are owned by root. Exit the dev container. Comment out remote user: ros in dev-container.json and use chown -R ros /workspaces
 then exit back out. uncomment the user line and re open dev container. Check to ensure you now own files as ros user
@@ -37,6 +51,13 @@ then exit back out. uncomment the user line and re open dev container. Check to 
 2. enable network sharing 
 3. use `ifconfig` to find the flight computer ip
 4. connect to it by using fancy command and change user and ip in said command
+  
+  `ssh -L 8080:localhost:80 -L 8086:localhost:8086 -L 9090:localhost:9090 ros@10.42.0.185`
+  
+   `ssh ros@10.42.0.185`
+  
+   `10.42.0.185`
+  
 5. sync things. password pop up is in terminal. This is done in vscode task explorer again
 6. make sure dev container doesn't have open ports
 7. in your browser open:
